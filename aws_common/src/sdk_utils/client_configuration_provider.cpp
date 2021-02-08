@@ -141,7 +141,9 @@ ClientConfiguration ClientConfigurationProvider::GetClientConfiguration(
   reader_->ReadParam(ParameterPath(CLIENT_CONFIG_PREFIX, "use_dual_stack"), config.useDualStack);
   reader_->ReadParam(ParameterPath(CLIENT_CONFIG_PREFIX, "enable_clock_skew_adjustment"),
                     config.enableClockSkewAdjustment);
-  reader_->ReadParam(ParameterPath(CLIENT_CONFIG_PREFIX, "follow_redirects"), config.followRedirects);
+  bool redirect = true;
+  reader_->ReadParam(ParameterPath(CLIENT_CONFIG_PREFIX, "follow_redirects"), redirect);
+  config.followRedirects = redirect ? FollowRedirectsPolicy::ALWAYS : FollowRedirectsPolicy::NEVER;
   reader_->ReadParam(ParameterPath(CLIENT_CONFIG_PREFIX, "verify_SSL"), config.verifySSL);
 
   // check for non-default strategy
